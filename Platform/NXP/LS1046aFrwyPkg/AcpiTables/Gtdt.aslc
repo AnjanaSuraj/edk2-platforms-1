@@ -1,0 +1,13 @@
+/** @file
+*  Generic Timer Description Table (GTDT)
+*  This table does not caputre watchdog as the one on ls1046
+*  is not SBSA complaint and thus finds a place in DSDT.
+*
+*  Copyright 2019-2020 NXP
+*  Copyright 2020 Puresoftware Ltd
+*
+*  SPDX-License-Identifier: BSD-2-Clause-Patent
+*
+**/
+
+#include <AcpiTableInclude/Gtdt.aslc>

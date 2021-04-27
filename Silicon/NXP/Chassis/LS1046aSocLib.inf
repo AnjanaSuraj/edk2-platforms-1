@@ -1,0 +1,63 @@
+#  @file
+#
+#  Copyright 2017-2018, 2020 NXP
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+#
+
+[Defines]
+  INF_VERSION                    = 0x0001001A
+  BASE_NAME                      = SocLib
+  FILE_GUID                      = ddd5f950-8816-4d38-8f98-f42b07333f78
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SocLib
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/NXP/NxpQoriqLs.dec
+  Silicon/NXP/Chassis/Chassis2/Chassis2.dec
+  Silicon/NXP/LS1046A/LS1046A.dec
+
+[LibraryClasses]
+  ArmSmcLib
+  BaseLib
+  IoAccessLib
+  DebugLib
+  FpgaLib
+  IfcLib
+  IoAccessLib
+  SerialPortLib
+
+[Sources.common]
+  Chassis.c
+  Chassis2/Erratum.c
+  Chassis2/Soc.c
+  SerDes.c
+
+[FixedPcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
+  gNxpQoriqLsTokenSpaceGuid.PcdGutsBaseAddr
+  gNxpQoriqLsTokenSpaceGuid.PcdPlatformFreqDiv
+  gNxpQoriqLsTokenSpaceGuid.PcdSerdes2Enabled
+  gNxpQoriqLsTokenSpaceGuid.PcdGurBigEndian
+  gNxpQoriqLsTokenSpaceGuid.PcdClkBaseAddr
+  gNxpQoriqLsTokenSpaceGuid.PcdScfgBaseAddr
+  gNxpQoriqLsTokenSpaceGuid.PcdScfgIntPol
+  gNxpQoriqLsTokenSpaceGuid.PcdMuxToUsb3
+  gNxpQoriqLsTokenSpaceGuid.PcdUsbPhy1BaseAddress
+  gNxpQoriqLsTokenSpaceGuid.PcdUsbPhy2BaseAddress
+  gNxpQoriqLsTokenSpaceGuid.PcdUsbPhy3BaseAddress
+  gNxpQoriqLsTokenSpaceGuid.PcdNumGpioController
+  gNxpQoriqLsTokenSpaceGuid.PcdGpioModuleBaseAddress
+  gNxpQoriqLsTokenSpaceGuid.PcdGpioControllerOffset
+  gNxpQoriqLsTokenSpaceGuid.PcdGpioControllerBigEndian

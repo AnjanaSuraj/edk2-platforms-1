@@ -23,10 +23,10 @@
 
 [FD.LS1046AFRWY_EFI]
 BaseAddress   = 0x82000000|gArmTokenSpaceGuid.PcdFdBaseAddress  #The base address of the FLASH Device.
-Size          = 0x00140000|gArmTokenSpaceGuid.PcdFdSize         #The size in bytes of the FLASH Device
+Size          = 0x00200000|gArmTokenSpaceGuid.PcdFdSize         #The size in bytes of the FLASH Device
 ErasePolarity = 1
-BlockSize     = 0x1000
-NumBlocks     = 0x140
+BlockSize     = 0x1
+NumBlocks     = 0x200000
 
 ################################################################################
 #
@@ -43,11 +43,11 @@ NumBlocks     = 0x140
 # RegionType <FV, DATA, or FILE>
 #
 ################################################################################
-0x00000000|0x00140000
+0x00000000|0x00200000
 gArmTokenSpaceGuid.PcdFvBaseAddress|gArmTokenSpaceGuid.PcdFvSize
 FV = FVMAIN_COMPACT
 
-!include Platform/NXP/FVRules.fdf.inc
+!include ../FVRules.fdf.inc
 !include VarStore.fdf.inc
 ################################################################################
 #
@@ -61,7 +61,7 @@ FV = FVMAIN_COMPACT
 ################################################################################
 
 [FV.FvMain]
-FvNameGuid         = 1037c42b-8452-4c41-aac7-41e6c31468da
+FvNameGuid         = 8c39ef64-de57-4ff5-83f4-d3207ef9681e 
 BlockSize          = 0x1
 NumBlocks          = 0         # This FV gets compressed so make it just big enough
 FvAlignment        = 8         # FV alignment and FV attributes setting.
@@ -89,15 +89,45 @@ READ_LOCK_STATUS   = TRUE
   #
   INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
 
+  # Platform DXE Driver
+  INF Silicon/NXP/Drivers/PlatformDxe/PlatformDxe.inf
+
+  #
+  # DT support
+  #
+  INF RuleOverride = DTB Platform/NXP/LS1046aFrwyPkg/DeviceTree/DeviceTree.inf
+  INF Silicon/NXP/Drivers/DtInitDxe/DtInitDxe.inf
+  INF EmbeddedPkg/Drivers/DtPlatformDxe/DtPlatformDxe.inf
+
+  #
+  # ACPI
+  #
+  INF RuleOverride=ACPITABLE Platform/NXP/LS1046aFrwyPkg/AcpiTables/AcpiTables.inf
+  INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+  INF Silicon/NXP/Drivers/NxpAcpiPlatformDxe/AcpiPlatformDxe.inf
+
+  INF Silicon/NXP/Drivers/SpiBusDxe/SpiBusDxe.inf
+  INF Silicon/NXP/Drivers/SpiNorFlashDxe/SpiNorFlashDxe.inf
+  INF Silicon/NXP/Drivers/SpiConfigurationDxe/SpiConfigurationDxe.inf
+  INF Silicon/NXP/Drivers/QspiDxe/QspiDxe.inf
+
   INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
+  INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
+  INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
   INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
   INF MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
-  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
-  INF MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
-  INF MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf
-  INF EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
-  INF MdeModulePkg/Universal/Metronome/Metronome.inf
   INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
+  INF MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
+  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+  #INF MdeModulePkg/Universal/Variable/EmuRuntimeDxe/EmuVariableRuntimeDxe.inf 
+  INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
+  INF MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf
+
+  INF Silicon/NXP/Drivers/I2cDxe/I2cDxe.inf
+
+  INF  EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
+
 
   #
   # Multiple Console IO support
@@ -108,17 +138,25 @@ READ_LOCK_STATUS   = TRUE
   INF MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
   INF MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
 
-  INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
-  INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
-  INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
+  INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
+  INF EmbeddedPkg/SimpleTextInOutSerial/SimpleTextInOutSerial.inf
 
   #
-  # FAT filesystem + GPT/MBR partitioning
+  # Networking stack
   #
-  INF MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
-  INF MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
-  INF FatPkg/EnhancedFatDxe/Fat.inf
-  INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
+!include NetworkPkg/Network.fdf.inc
+
+  #
+  # PCI
+  #
+  INF Silicon/NXP/Drivers/PciCpuIo2Dxe/PciCpuIo2Dxe.inf
+  INF MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
+  INF MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
+
+
+  INF Silicon/NXP/Drivers/LanIntelE1000Dxe/LanIntelE1000Dxe.inf
+
+  INF ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
 
   INF MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
 
@@ -132,6 +170,39 @@ READ_LOCK_STATUS   = TRUE
   INF MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
 
   INF Silicon/NXP/Drivers/UsbHcdInitDxe/UsbHcd.inf
+  INF MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
+  INF MdeModulePkg/Bus/Usb/UsbMouseDxe/UsbMouseDxe.inf
+
+  #
+  # DPAA1 Ethernet driver
+  #
+  INF Silicon/NXP/Drivers/Dpaa1Ethernet/Dpaa1EthernetDxe.inf
+  #
+
+  #
+  # SMBIOS
+  #
+  INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+  INF Platform/NXP/LS1046aFrwyPkg/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
+
+  # FAT filesystem + GPT/MBR partitioning
+  #
+  INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
+  INF MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
+  INF MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
+  INF FatPkg/FatPei/FatPei.inf
+  INF FatPkg/EnhancedFatDxe/Fat.inf
+
+  #
+  # MMC
+  #
+  INF Silicon/NXP/Drivers/MmcHostDxe/MmcHostDxe.inf
+  INF EmbeddedPkg/Universal/MmcDxe/MmcDxe.inf
+
+  #
+  # RNG
+  #
+  INF Silicon/NXP/Drivers/RngDxe/RngDxe.inf
 
   #
   # UEFI application (Shell Embedded Boot Loader)
@@ -146,6 +217,31 @@ READ_LOCK_STATUS   = TRUE
   INF MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
   INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
   INF MdeModulePkg/Application/UiApp/UiApp.inf
+
+  INF Silicon/NXP/Drivers/Dpaa1EthernetDxe/Dpaa1EthernetDxe.inf
+
+!if $(CAPSULE_ENABLE)
+  INF MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
+  INF SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf
+  FILE FREEFORM = PCD(gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiPkcs7TestPublicKeyFileGuid) {
+     SECTION RAW = BaseTools/Source/Python/Pkcs7Sign/TestRoot.cer
+     SECTION UI = "Pkcs7TestRoot"
+  }
+!endif
+  #
+  # GOP support
+  #
+!if $(AARCH64_GOP_ENABLE)
+  INF edk2-non-osi/Drivers/OptionRomPkg/AMDGop/AMDGop.inf
+!endif
+
+  #
+  # X86 Emulation Support
+  #
+!if $(X64EMU_ENABLE) == TRUE
+  # PE/COFF emulator for X64 option ROMs taken from edk2-non-osi
+  INF edk2-non-osi/Emulator/X86EmulatorDxe/X86EmulatorDxe.inf
+!endif
 
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 8
@@ -165,18 +261,104 @@ READ_STATUS        = TRUE
 READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
-  INF ArmPlatformPkg/PrePeiCore/PrePeiCoreUniCore.inf
-  INF MdeModulePkg/Core/Pei/PeiMain.inf
+  INF ArmPlatformPkg/PrePi/PeiUniCore.inf
   INF MdeModulePkg/Universal/PCD/Pei/Pcd.inf
-  INF MdeModulePkg/Universal/FaultTolerantWritePei/FaultTolerantWritePei.inf
-  INF MdeModulePkg/Universal/Variable/Pei/VariablePei.inf
-  INF ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
-  INF ArmPkg/Drivers/CpuPei/CpuPei.inf
-  INF ArmPlatformPkg/PlatformPei/PlatformPeim.inf
-  INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
 
-  FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {
+!if $(CAPSULE_ENABLE)
+  INF RuleOverride = FMP_IMAGE_DESC Platform/NXP/LS1046aFrwyPkg/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
+!endif
+
+  FILE FV_IMAGE = c1c1e1a2-3879-4b5e-9dd1-3df2ce60d8ec {
     SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
       SECTION FV_IMAGE = FVMAIN
     }
   }
+
+!if $(CAPSULE_ENABLE)
+[FV.CapsuleDispatchFv]
+FvAlignment        = 8
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_DISABLED_CAP = TRUE
+WRITE_ENABLED_CAP  = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_DISABLED_CAP  = TRUE
+READ_ENABLED_CAP   = TRUE
+READ_STATUS        = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+INF SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf
+
+[FV.SystemFirmwareUpdateCargo]
+FvAlignment        = 8
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_DISABLED_CAP = TRUE
+WRITE_ENABLED_CAP  = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_DISABLED_CAP  = TRUE
+READ_ENABLED_CAP   = TRUE
+READ_STATUS        = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+  FILE RAW = 5ba7f57f-d101-4de8-bfd3-bf0751ab1463 { # PcdEdkiiSystemFirmwareFileGuid
+    FD = LS1046AFRWY_EFI
+  }
+
+  FILE RAW = ce57b167-b0e4-41e8-a897-5f4feb781d40 { # gEdkiiSystemFmpCapsuleDriverFvFileGuid
+    FV = CapsuleDispatchFv
+  }
+
+  FILE RAW = 812136D3-4D3A-433A-9418-29BB9BF78F6E { # gEdkiiSystemFmpCapsuleConfigFileGuid
+    Platform/NXP/LS1046aFrwyPkg/SystemFirmwareUpdateConfig/SystemFirmwareUpdateConfig.ini
+  }
+!endif
+
+!if $(CAPSULE_ENABLE)
+[FmpPayload.FmpPayloadSystemFirmwarePkcs7]
+IMAGE_HEADER_INIT_VERSION = 0x02
+IMAGE_TYPE_ID             = 595beaf0-0319-4d4d-b81b-50ebe89ba8e6 # PcdSystemFmpCapsuleImageTypeIdGuid
+IMAGE_INDEX               = 0x1
+HARDWARE_INSTANCE         = 0x0
+MONOTONIC_COUNT           = 0x1
+CERTIFICATE_GUID          = 4AAFD29D-68DF-49EE-8AA9-347D375665A7 # PKCS7
+
+FV = SystemFirmwareUpdateCargo
+
+[Capsule.LS1046AFRWYFirmwareUpdateCapsuleFmpPkcs7]
+CAPSULE_GUID                = 6dcbd5ed-e82d-4c44-bda1-7194199ad92a # gEfiFmpCapsuleGuid
+CAPSULE_HEADER_SIZE         = 0x20
+CAPSULE_HEADER_INIT_VERSION = 0x1
+
+FMP_PAYLOAD = FmpPayloadSystemFirmwarePkcs7
+
+################################################################################
+#
+# Rules are use with the [FV] section's module INF type to define
+# how an FFS file is created for a given INF file. The following Rule are the default
+# rules for the different module type. User can add the customized rules to define the
+# content of the FFS file.
+#
+################################################################################
+
+[Rule.Common.DXE_DRIVER.FMP_IMAGE_DESC]
+  FILE DRIVER = $(NAMED_GUID) {
+     RAW BIN                  |.acpi
+     DXE_DEPEX DXE_DEPEX Optional        $(INF_OUTPUT)/$(MODULE_NAME).depex
+     PE32      PE32    Align=4K          $(INF_OUTPUT)/$(MODULE_NAME).efi
+     UI       STRING="$(MODULE_NAME)" Optional
+  }
+!endif
+
