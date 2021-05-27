@@ -20,6 +20,10 @@
 #define SVR_MAJOR(svr)               (((svr) >> 4) & 0xf)
 #define SVR_MINOR(svr)               (((svr) >> 0) & 0xf)
 
+// PCLK : Dynamic Clock
+#define DCFG_BASE                    0x1EE0000  /* Device configuration data Base Address */
+#define DCFG_LEN                     0xFFF      /* Device configuration data length */
+
 // Gic
 #define GIC_VERSION                  2
 #define GICD_BASE                    0x1410000
