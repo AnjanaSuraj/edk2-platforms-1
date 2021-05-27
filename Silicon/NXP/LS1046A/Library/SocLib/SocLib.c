@@ -2,6 +2,7 @@
   SoC specific Library containg functions to initialize various SoC components
 
   Copyright 2017-2020 NXP
+  Copyright 2021 Puresoftware Ltd
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -62,6 +63,21 @@ SocGetClock (
   }
 
   return ReturnValue;
+}
+
+/**
+  Function to get SoC's System Version Register(SVR)
+ **/
+UINT32
+SocGetSvr (
+  VOID
+  )
+{
+  LS1046A_DEVICE_CONFIG  *Dcfg;
+
+  Dcfg = (LS1046A_DEVICE_CONFIG  *)LS1046A_DCFG_ADDRESS;
+
+  return DcfgRead32 ((UINTN)&Dcfg->Svr);
 }
 
 /**
