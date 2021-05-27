@@ -2,6 +2,7 @@
 #  LS1046A Soc package.
 #
 #  Copyright 2017-2020 NXP
+#  Copyright 2021 Puresoftware Ltd
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -47,5 +48,14 @@
 ################################################################################
 [Components.common]
   MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
+
+#
+# Configuration Manager
+!if $(DYNAMIC_ACPI_ENABLE) == TRUE
+  Platform/NXP/ConfigurationManagerPkg/ConfigurationManagerDxe/ConfigurationManagerDxe.inf {
+    <BuildOptions>
+      *_*_*_PLATFORM_FLAGS = -I$(WORKSPACE)/Platform/NXP/LS1046aFrwyPkg/Include
+  }
+!endif
 
 ##
