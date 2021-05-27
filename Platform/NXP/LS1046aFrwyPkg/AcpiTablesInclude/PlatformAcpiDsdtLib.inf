@@ -1,0 +1,39 @@
+## @file
+#  Raw Table Generator
+#
+#  Copyright 2021 NXP
+#  Copyright 2021 Puresoftware Ltd
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION    = 0x00010019
+  BASE_NAME      = PlatformAcpiDsdtLib
+  FILE_GUID      = A97F70AC-3BB4-4596-B4D2-9F948EC12D17
+  VERSION_STRING = 1.0
+  MODULE_TYPE    = DXE_DRIVER
+  LIBRARY_CLASS  = NULL|DXE_DRIVER
+  CONSTRUCTOR    = AcpiDsdtLibConstructor
+  DESTRUCTOR     = AcpiDsdtLibDestructor
+
+[Sources]
+  PlatformAcpiDsdtLib/RawDsdtGenerator.c
+  Dsdt/Dsdt.asl
+
+[Packages]
+  DynamicTablesPkg/DynamicTablesPkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Platform/NXP/LS1046aFrwyPkg/LS1046aFrwyPkg.dec
+  Platform/NXP/ConfigurationManagerPkg/ConfigurationManagerPkg.dec
+
+[LibraryClasses]
+  BaseLib
+
+[Pcd]
+
+[Protocols]
+
+[Guids]
