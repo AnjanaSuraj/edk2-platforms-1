@@ -3,6 +3,7 @@
 #  LS1046AFRWY Board package.
 #
 #  Copyright 2019-2020 NXP
+#  Copyright 2021 Puresoftware Ltd
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -22,9 +23,17 @@
   OUTPUT_DIRECTORY               = Build/LS1046aFrwyPkg
   FLASH_DEFINITION               = Platform/NXP/LS1046aFrwyPkg/LS1046aFrwyPkg.fdf
 
+  # This flag controls the dynamic acpi generation
+  #
+  DEFINE DYNAMIC_ACPI_ENABLE     = TRUE
+
 !include Silicon/NXP/NxpQoriqLs.dsc.inc
 !include MdePkg/MdeLibs.dsc.inc
 !include Silicon/NXP/LS1046A/LS1046A.dsc.inc
+
+!if $(DYNAMIC_ACPI_ENABLE) == TRUE
+  !include DynamicTablesPkg/DynamicTables.dsc.inc
+!endif
 
 [LibraryClasses.common]
   ArmPlatformLib|Platform/NXP/LS1046aFrwyPkg/Library/ArmPlatformLib/ArmPlatformLib.inf
@@ -45,5 +54,24 @@
   }
 
   Silicon/NXP/Drivers/UsbHcdInitDxe/UsbHcd.inf
+
+  #
+  # Dynamic Table Factory
+  !if $(DYNAMIC_ACPI_ENABLE) == TRUE
+    DynamicTablesPkg/Drivers/DynamicTableFactoryDxe/DynamicTableFactoryDxe.inf {
+      <LibraryClasses>
+        NULL|DynamicTablesPkg/Library/Acpi/Arm/AcpiFadtLibArm/AcpiFadtLibArm.inf
+        NULL|DynamicTablesPkg/Library/Acpi/Arm/AcpiGtdtLibArm/AcpiGtdtLibArm.inf
+        NULL|DynamicTablesPkg/Library/Acpi/Arm/AcpiMadtLibArm/AcpiMadtLibArm.inf
+        NULL|DynamicTablesPkg/Library/Acpi/Arm/AcpiMcfgLibArm/AcpiMcfgLibArm.inf
+        NULL|DynamicTablesPkg/Library/Acpi/Arm/AcpiSpcrLibArm/AcpiSpcrLibArm.inf
+    }
+  !endif
+
+  #
+  # Acpi Support
+  #
+  MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
+  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
 
 ##
