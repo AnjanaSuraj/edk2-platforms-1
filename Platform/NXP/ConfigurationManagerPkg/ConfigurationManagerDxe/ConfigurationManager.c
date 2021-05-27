@@ -2,7 +2,7 @@
   Configuration Manager Dxe
 
   Copyright 2020 NXP
-  Copyright 2020 Puresoftware Ltd
+  Copyright 2020-2021 Puresoftware Ltd
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -170,12 +170,8 @@ InitializePlatformRepository (
   PlatformRepo = This->PlatRepoInfo;
 
   Svr = SocGetSvr ();
-  if (SVR_SOC_VER(Svr) == SVR_LX2160A) {
-    PlatformRepo->FslBoardRevision = SVR_MAJOR(Svr);
-    DEBUG ((DEBUG_INFO, "Fsl : SoC LX2160A Rev = 0x%x\n", PlatformRepo->FslBoardRevision));
-  } else {
-    DEBUG ((DEBUG_INFO, "Fsl : SoC Unknown Rev = 0x%x\n", PlatformRepo->FslBoardRevision));
-  }
+  PlatformRepo->FslBoardRevision = SVR_MAJOR(Svr);
+  DEBUG ((DEBUG_INFO, "Fsl : SoC %s Rev = 0x%x\n", PLAT_SOC_NAME, PlatformRepo->FslBoardRevision));
 
   return EFI_SUCCESS;
 }

@@ -2,7 +2,7 @@
  *  Platform headers
  *
  *  Copyright 2020 NXP
- *  Copyright 2020 Puresoftware Ltd
+ *  Copyright 2020-2021 Puresoftware Ltd
  *
  *  SPDX-License-Identifier: BSD-2-Clause-Patent
  *
@@ -15,11 +15,10 @@
 #define EFI_ACPI_ARM_OEM_REVISION       0x00000000
 
 // Soc defines
+#define PLAT_SOC_NAME           "LX2160ARDB"
 #define SVR_SOC_VER(svr)        (((svr) >> 8) & 0xFFFFFE)
 #define SVR_MAJOR(svr)          (((svr) >> 4) & 0xf)
 #define SVR_MINOR(svr)          (((svr) >> 0) & 0xf)
-
-#define SVR_LX2160A             0x873600
 
 // PCLK
 #define DCFG_BASE   0x1E00000
