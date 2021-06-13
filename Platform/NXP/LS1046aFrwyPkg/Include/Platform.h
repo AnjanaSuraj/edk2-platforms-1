@@ -34,6 +34,8 @@
 // UART
 #define UART0_BASE                   0x21C0500
 #define UART0_IT                     86
+#define UART1_BASE                   0x21D0600
+#define UART1_IT                     87
 #define UART0_LENGTH                 0x100
 #define SPCR_FLOW_CONTROL_NONE       0
 

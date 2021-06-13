@@ -76,3 +76,16 @@
   MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
 
 ##
+
+[PcdsFixedAtBuild.common]
+!if $(TARGET) == RELEASE
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x27
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x81000000
+!else
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x2F
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x81000044
+!endif
+
+# Serial Terminal
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x021c0500
+  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate|115200
