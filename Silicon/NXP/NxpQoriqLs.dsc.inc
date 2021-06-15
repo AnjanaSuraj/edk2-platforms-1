@@ -182,7 +182,7 @@
   NULL|ArmPkg/Library/CompilerIntrinsicsLib/CompilerIntrinsicsLib.inf
 
 [BuildOptions]
-  GCC:RELEASE_*_*_CC_FLAGS  = -DMDEPKG_NDEBUG
+  #GCC:RELEASE_*_*_CC_FLAGS  = -DMDEPKG_NDEBUG
 
   #
   # Disable deprecated APIs.
