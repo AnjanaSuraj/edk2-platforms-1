@@ -1,6 +1,7 @@
 /** @file
 
   Copyright 2020 NXP
+  Copyright 2021 Puresoftware Ltd
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -26,6 +27,9 @@
 
 #define LS1046A_DCFG_ADDRESS         NXP_LAYERSCAPE_CHASSIS2_DCFG_ADDRESS
 #define LS1046A_SCFG_ADDRESS         NXP_LAYERSCAPE_CHASSIS2_SCFG_ADDRESS
+
+#define LS1046A_PCI1_PHYS_ADDRESS    FixedPcdGet64 (PcdPciExp1BaseAddr)
+#define LS1046A_PCI_SIZE             SIZE_32GB
 
 /**
   Reset Control Word (RCW) Bits

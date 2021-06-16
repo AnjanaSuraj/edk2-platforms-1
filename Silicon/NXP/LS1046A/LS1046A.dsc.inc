@@ -13,6 +13,7 @@
 [LibraryClasses.common]
   SocLib|Silicon/NXP/LS1046A/Library/SocLib/SocLib.inf
   SerialPortLib|Silicon/NXP/Library/DUartPortLib/DUartPortLib.inf
+  SerDesHelperLib|Silicon/NXP/Library/SerDesHelperLib/SerDesHelperLib.inf
 
 ################################################################################
 #
@@ -36,9 +37,16 @@
   gNxpQoriqLsTokenSpaceGuid.PcdUsbSize|0x100000
   gNxpQoriqLsTokenSpaceGuid.PcdNumUsbController|3
 
+  gNxpQoriqLsTokenSpaceGuid.PcdSerDesLanes|0x4
+  gNxpQoriqLsTokenSpaceGuid.PcdPciExp1BaseAddr|0x4000000000
+  gNxpQoriqLsTokenSpaceGuid.PcdNumPciController|3
+  gNxpQoriqLsTokenSpaceGuid.PcdPcieLutBase|0x80000
+  gNxpQoriqLsTokenSpaceGuid.PcdPcieLutDbg|0x407FC
+
 [PcdsFeatureFlag]
   gNxpQoriqLsTokenSpaceGuid.PcdDcfgBigEndian|TRUE
   gNxpQoriqLsTokenSpaceGuid.PcdScfgBigEndian|TRUE
+  gNxpQoriqLsTokenSpaceGuid.PcdPciLutBigEndian|TRUE
   gNxpQoriqLsTokenSpaceGuid.PcdGpioControllerBigEndian|TRUE
 
 ################################################################################

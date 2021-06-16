@@ -1,6 +1,7 @@
 #  @file
 #
 #  Copyright 2017-2020 NXP
+#  Copyright 2021 Puresoftware Ltd
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -23,6 +24,12 @@
 [LibraryClasses]
   ChassisLib
   DebugLib
+  PcdLib
+  SerDesHelperLib
 
 [Sources.common]
+  SerDes.c
   SocLib.c
+
+[FixedPcd]
+  gNxpQoriqLsTokenSpaceGuid.PcdSerDesLanes
